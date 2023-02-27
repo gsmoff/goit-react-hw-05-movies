@@ -46,8 +46,10 @@ export const MovieDetails = () => {
                     >
                         <img
                             src={
-                                'https://image.tmdb.org/t/p/original' +
                                 movie.poster_path
+                                    ? 'https://image.tmdb.org/t/p/original' +
+                                      movie.poster_path
+                                    : 'https://orten.in.ua/default-img.png'
                             }
                             alt={movie.title || movie.name}
                             width="240"
