@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { Suspense } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { fetchMovies } from 'services/moviesApi';
 import { useLocation } from 'react-router-dom';
 
 export const Home = () => {
     const [movies, setMovies] = useState([]);
-    const location = useLocation()
-
+    const location = useLocation();
 
     useEffect(() => {
         fetchMovies()
@@ -22,15 +22,18 @@ export const Home = () => {
     }, []);
     return (
         <>
-
             <ul>
                 {movies.map(({ id, title, name }) => (
                     <li key={id}>
-                        <Link to={`/movies/${id}`} state={{from:location }}>{title || name}</Link>
+                        <Link to={`/movies/${id}`} state={{ from: location }}>
+                            {title || name}
+                        </Link>
                     </li>
                 ))}
             </ul>
-            <Outlet />
+            <Suspense fallback={<div>Loading...</div>}>
+                <Outlet />
+            </Suspense>
         </>
     );
 };

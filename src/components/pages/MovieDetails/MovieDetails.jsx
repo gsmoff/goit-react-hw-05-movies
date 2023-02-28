@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { Suspense } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchMoviesById } from '../../services/moviesApi';
-import { Link, Outlet,useNavigate, useLocation } from 'react-router-dom';
+import { fetchMoviesById } from '../../../services/moviesApi';
+import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 
 export const MovieDetails = () => {
     const [movie, setMovie] = useState('');
     const { movieId } = useParams();
     const navigate = useNavigate();
-    const location = useLocation()
+    const location = useLocation();
 
     useEffect(() => {
         fetchMoviesById(movieId)
@@ -27,9 +28,6 @@ export const MovieDetails = () => {
     return (
         <>
             <button
-                style={{
-                    margin: '10px',
-                }}
                 onClick={() => navigate(location.state?.from ?? '/')}
             >
                 Go back
@@ -81,7 +79,9 @@ export const MovieDetails = () => {
                             </Link>
                         </li>
                     </ul>
-                    <Outlet />
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Outlet />
+                    </Suspense>
                 </>
             )}
         </>

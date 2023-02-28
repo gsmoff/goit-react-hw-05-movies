@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Suspense } from 'react';
 import { fetchMoviesBySearch } from 'services/moviesApi';
 import { Link, Outlet } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
@@ -7,7 +8,7 @@ export const Movies = () => {
     const [movies, setMovies] = useState([]);
     const [searchParams, setSearchParams] = useSearchParams();
     const event = searchParams.get('searchText') ?? '';
-        const location = useLocation();
+    const location = useLocation();
 
     const handleSubmit = e => {
         e.preventdefault();
@@ -16,7 +17,7 @@ export const Movies = () => {
         form.reset();
     };
     useEffect(() => {
-        if (event === null && event === "") {
+        if (event === null && event === '') {
             return;
         }
         fetchMoviesBySearch(event)
@@ -53,7 +54,9 @@ export const Movies = () => {
                     ))}
                 </ul>
             )}
-            <Outlet />
+            <Suspense fallback={<div>Loading...</div>}>
+                <Outlet />
+            </Suspense>
         </>
     );
 };

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMoviesByReviews } from '../../../services/moviesApi';
 import { Outlet } from 'react-router-dom';
+import { Suspense } from 'react';
 
 export const ReviewsMovies = () => {
     const [reviews, setReviews] = useState([]);
@@ -35,7 +36,9 @@ export const ReviewsMovies = () => {
                                 </li>
                             ))}
                         </ul>
-                        <Outlet />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <Outlet />
+                        </Suspense>
                     </div>
                 </>
             )}

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMoviesByCast } from '../../../services/moviesApi';
 import { Outlet } from 'react-router-dom';
@@ -26,6 +27,9 @@ export const CastMovies = () => {
     return (
         <div className={css.colum}>
             <ul className={css.imageGallery}>
+                {actors.length === 0 && (
+                    <p>We don`t have information about the cast</p>
+                )}
                 {actors.map(
                     ({ character, original_name, profile_path, id }) => (
                         <li
@@ -35,7 +39,8 @@ export const CastMovies = () => {
                             <img
                                 src={
                                     profile_path
-                                        ? 'https://image.tmdb.org/t/p/original' + profile_path
+                                        ? 'https://image.tmdb.org/t/p/original' +
+                                          profile_path
                                         : 'https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg'
                                 }
                                 alt={character}
@@ -47,7 +52,9 @@ export const CastMovies = () => {
                     )
                 )}
             </ul>
-            <Outlet />
+            <Suspense fallback={<div>Loading...</div>}>
+                <Outlet />
+            </Suspense>
         </div>
     );
 };
